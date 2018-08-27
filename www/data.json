@@ -1,0 +1,13 @@
+[{
+    "jasa": "PT_60",
+    "harga": "80000",
+    "info": "pijat kaki dan free pijat punggung 5 menit"
+}, {
+    "jasa": "PT_90",
+    "harga": "100000",
+    "info": "full body massage dan pijat kepala"
+}, {
+    "jasa": "PT_120",
+    "harga": "125000",
+    "info": "full body massage,pijat kepala, dan tambahan stretching"
+}]

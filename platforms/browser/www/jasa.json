@@ -1,0 +1,37 @@
+{
+    "data": {
+        "produk": [{
+            "id": 1,
+            "nama": "Pijat Tradisional",
+            "harga": 80000
+        }, {
+            "id": 2,
+            "nama": "Pijat Tradisional",
+            "harga": 100000
+        }, {
+            "id": 3,
+            "nama": "Pijat Tradisional",
+            "harga": 125000
+        }, {
+            "id": 4,
+            "nama": "Pijat Refleksi",
+            "harga": 60000
+        }, {
+            "id": 5,
+            "nama": "Pijat Refleksi",
+            "harga": 80000
+        }, {
+            "id": 6,
+            "nama": "Kerokan",
+            "harga": 45000
+        }, {
+            "id": 7,
+            "nama": "Head & Back Massage",
+            "harga": 45000
+        }, {
+            "id": 8,
+            "nama": "Totok Wajah",
+            "harga": 45000
+        }]
+    }
+}

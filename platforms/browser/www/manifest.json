@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "AkiraPos",
+  "short_name": "AkiraPos",
+  "version": "io.cordova.hellocordova",
+  "description": "Aplikasi kasir Akira Reflexology berbasis android",
+  "author": "Apache Cordova Team",
+  "icons": [],
+  "start_url": "index.html"
+}

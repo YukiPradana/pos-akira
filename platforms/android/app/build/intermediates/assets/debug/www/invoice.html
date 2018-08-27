@@ -1,0 +1,293 @@
+<ons-page id="invoice">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button></ons-back-button>
+        </div>
+        <div class="center">
+            Detail Pesanan
+        </div>
+    </ons-toolbar>
+    <ons-list modifier="nodivider">
+        <ons-list-header id="tanggal-trans">03/06/2018, 10:00</ons-list-header>
+        <ons-list-item modifier="nodivider" id="nama-pelanggan-pesan"></ons-list-item>
+        <ons-list-item modifier="nodivider" id="kode-pembayaran"></ons-list-item>
+        <ons-list-item modifier="nodivider">
+            <ons-row align="bottom">
+                <ons-col width="31%">
+                    <ons-select id="choose-sel" onchange="editSelects(event)">
+                        <select class="jasaListCheckout" id="list-jasa-invoice">
+                        </select>
+                    </ons-select>
+                </ons-col>
+                <ons-col width="3%"></ons-col>
+                <ons-col width="30%">
+                    <ons-select id="choose-sel" onchange="editSelects(event)">
+                        <select class="terapisListCheckout" id="list-terapis-invoice">
+                        </select>
+                    </ons-select>
+                </ons-col>
+                <ons-col width="3%"></ons-col>
+                <ons-col width="33%">
+                    <ons-button id="tambah-invoice" modifier="large">Tambah</ons-button>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <!--isi tabel tambah transaksi-->
+        <ons-list>
+            <ons-list-item style="background-color: #b0b3b7">
+                <ons-row>
+                    <ons-col width="29%">Nama Jasa</ons-col>
+                    <ons-col width="18%">Harga</ons-col>
+                    <ons-col width="18%">Terapis</ons-col>
+                    <ons-col width="5%"></ons-col>
+
+                    <!--
+                    <ons-col width="29%">Nama Jasa</ons-col>
+                    <ons-col width="18%">Harga</ons-col>
+                    <ons-col width="18%">Terapis</ons-col>
+                    <ons-col width="10%">Jml</ons-col>
+                    <ons-col width="20%">Total</ons-col>
+                    <ons-col width="5%">x</ons-col>-->
+                </ons-row>
+            </ons-list-item>
+            <ons-list id="list-item-invoice">
+
+            </ons-list>
+        </ons-list>
+        <ons-list-item modifier="nodivider">
+            <ons-row>
+                <ons-col width=48%>
+                    <ons-input id="input-ppn" type="number" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="PPN"></ons-input>
+                </ons-col>
+                <ons-col width=4%></ons-col>
+                <ons-col width=48%>
+                    <ons-input id="input-diskon" type="number" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="Diskon"></ons-input>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <!--tombol scan barcode-->
+        <ons-list-item modifier="nodivider">
+            <ons-row align="bottom">
+                <ons-col width="48%">
+                    <ons-input id="input-kode-voucher" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="Nilai voucher"></ons-input>
+                </ons-col>
+                <ons-col width="2%"></ons-col>
+                <ons-col width="50%">
+                    <ons-button modifier="large" id="buttonQR">
+                        <ons-icon icon="md-crop-free"> scan kupon</ons-icon>
+                    </ons-button>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <ons-list-item modifier="nodivider">
+            <ons-row style="font-size: 13px;">
+                <ons-col width="33%"></ons-col>
+                <ons-col width="33%" style="text-align: right;">Total :</ons-col>
+                <ons-col width="33%" id="total-harga-invoice">Rp. xxxxxxxx</ons-col>
+            </ons-row>
+            <ons-row style="font-size: 13px; align:'bottom'">
+                <ons-col width="18%">
+                    <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Tunai" input-id="radio-1" checked>Tunai</ons-radio>
+                </ons-col>
+                <ons-col width="25%">
+                    <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Non-Tunai" input-id="radio-2">Non-Tunai</ons-radio>
+                </ons-col>
+
+                <ons-col width="20%" style="text-align: right;">Nominal :</ons-col>
+                <ons-col width="7%">Rp.</ons-col>
+                <ons-col width="26%" style="text-align: left;">
+                    <label>
+                        <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="20" placeholder="" onkeyup="inputTunaiFormat()"></ons-input>
+                    </label>
+                </ons-col>
+            </ons-row>
+            <ons-row style="font-size: 13px;">
+                <ons-col width="33%"></ons-col>
+                <ons-col width="33%" style="text-align: right;">Kembali :</ons-col>
+                <ons-col width="33%" id="kembalian">Rp. xxxxxxxx</ons-col>
+            </ons-row>
+        </ons-list-item>
+        <ons-list-item modifier="nodivider">
+            <ons-row>
+                <ons-col width="52%"></ons-col>
+                <ons-col width="48%">
+                    <ons-button id="tombol-print" modifier="large">Proses</ons-button>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+    </ons-list>
+
+    <!-- alert dialog -->
+    <ons-alert-dialog id="invoice-alert-dialog" modifier="rowfooter">
+        <div class="alert-dialog-title">Konfirmasi</div>
+
+        <div class="alert-dialog-content">
+            <div id="print-gagal-notification"></div>
+            Proses dan print Struk?
+        </div>
+        <div class="alert-dialog-footer">
+            <ons-alert-dialog-button id='confirm' onclick="hideAlertDialogInvoice()">Ok</ons-alert-dialog-button>
+            <ons-alert-dialog-button onclick="hideAlertDialogInvoice()">Batal</ons-alert-dialog-button>
+        </div>
+    </ons-alert-dialog>
+
+    <!-- Modal -->
+    <ons-modal direction="up" id="modal-invoice">
+        <div style="text-align: center">
+            <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Memproses...
+            </p>
+        </div>
+    </ons-modal>
+
+    <ons-modal direction="up" id="modal-invoice-printer">
+        <div style="text-align: center">
+            <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Meyambungkan ke Printer...
+            </p>
+        </div>
+    </ons-modal>
+
+    <ons-modal direction="up" id="modal-qrCode">
+        <div style="text-align: center">
+            <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Membaca QRcode...
+            </p>
+        </div>
+    </ons-modal>
+    <script>
+        ons.getScriptPage().onInit = function () {
+            Authenticate();
+            document.getElementById("tanggal-trans").innerHTML = getTanggal() + '      ' + getWaktu();
+            let modal = document.querySelector('#modal-invoice');
+            modal.show();
+            $('#kembalian').html('Rp. ' + 0);
+            $.ajax({
+                method: 'get',
+                url: _URL_PRODUK_DAN_KARYAWAN,
+                success: function (data) {
+                    console.log(data);
+                    terapisData = data.data.KaryawanQuery;
+                    jasaData = data.data.produk;
+
+                    //list produk
+                    $.each(jasaData, function (key, value) {
+                        let id = value.id;
+                        let nama = value.nama;
+                        let harga = value.harga;
+                        let durasi = value.waktu;
+                        let list = $("<option value='basic' id=jasa-" + id + ">" + nama + "  (" + durasi + ")</option>");
+                        $(".jasaListCheckout").append(list);
+                    });
+
+                    //list terapis
+                    $.each(terapisData, function (key, value) {
+                        let nama = value.nama;
+                        let id = value.id;
+                        let jenis_kelamin = value.jenis_kelamin;
+                        let list = $("<option value='basic' id=terapis-" + id + ">" + nama + "  (" + jenis_kelamin + ")</option>");
+                        $(".terapisListCheckout").append(list);
+
+                    });
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+
+            $.ajax({
+                method: 'get',
+                url: _URL + '?query={headerReservasi(id:' + checkoutID + ') {id, detail_reservasi {' +
+                    'id,' +
+                    'produk_id{nama,harga,waktu},' +
+                    'karyawan_id{id,nama},' +
+                    'header_reservasi_id,' +
+                    '}}}',
+                success: function (data) {
+                    console.log(data);
+                    let datas = data.data.headerReservasi[0].detail_reservasi;
+                    console.log(datas);
+                    $.each(datas, function (key, value) {
+                        let produk = value.produk_id.nama;//tes
+                        let terapis = value.karyawan_id.nama;
+                        let id_terapis = value.karyawan_id.id;
+                        let id_produk = value.produk_id.id;
+                        let harga = value.produk_id.harga;
+
+                        if (arrayPrintTerapis.length != 0) {
+                            let contoh = ' ' + terapis + '\n';
+                            for (i = 0; i < arrayPrintTerapis.length; i++) {
+                                if (arrayPrintTerapis[i].string != contoh) {
+                                    arrayPrintTerapis.push({ "id": angkaIterasi2, "string": ' ' + terapis + '\n' });
+                                }
+                            }
+                        } else {
+                            arrayPrintTerapis.push({ "id": angkaIterasi2, "string": ' ' + terapis + '\n' });
+                        }
+
+
+                        arrayPrintPesanan.push({ "id": angkaIterasi2, "string": ' ' + produk + '\t \t' + harga + '\n' });
+
+
+
+                        let list = $("<ons-list-item id='dataPesanan-fix'><ons-row><ons-col width='29%'>" + produk + "</ons-col>" +
+                            "<ons-col width='18%'>" + harga + "</ons-col>" +
+                            "<ons-col width='18%'>" + terapis + "</ons-col>" +
+                            // "<ons-col width='10%'>1</ons-col>" +
+                            "<ons-col width='30%'></ons-col>" +
+                            "<ons-col width='5%'>" +
+                            // "<ons-icon icon='ion-navicon, material:md-close-circle-o' onClick='deleteItemInvoice(" + angkaIterasi2 + "," + harga + ")'></ons-icon></ons-col>"+
+                            "</ons-row><ons-list-item");
+                        $("#list-item-invoice").append(list);
+                        totalPembayaran = totalPembayaran + harga;
+                        // angkaIterasi2++;
+                    });
+                    $("#total-harga-invoice").html(numberWithCommas(totalPembayaran));
+                    modal.hide();
+
+                    console.log(arrayPrintPesanan);
+                    console.log(arrayPembayaran);
+
+                },
+                error: function (data) {
+                    modal.hide();
+                    ons.notification.alert('Koneksi ke Server Error');
+                    $('#myNavigator').popPage();
+                    console.log(data);
+                }
+            });
+
+            $('#nama-pelanggan-pesan').html(namaCheckout);
+            $('#kode-pembayaran').html(kodePembayaran);
+
+
+
+        };
+
+
+
+
+        ons.getScriptPage().onShow = function () {
+            try {
+                if (voucherValue == 0) {
+                    $('#input-kode-voucher').val(0);
+                } else {
+                    $('#input-kode-voucher').val(voucherValue);
+                }
+            } catch (err) {
+                ons.notification.alert(err);
+            }
+        };
+        ons.getScriptPage().onHide = function () {
+            BTPrinter.disconnect(function (data) {
+                console.log("Success");
+                console.log(data);
+            }, function (err) {
+                console.log("Error");
+                console.log(err);
+            });
+            deleteAllItemInvoice();
+
+        };
+    </script>
+</ons-page>

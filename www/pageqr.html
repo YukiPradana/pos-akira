@@ -1,0 +1,108 @@
+<ons-page page="pageQR">
+    <ons-back-button></ons-back-button>
+    <ons-modal direction="up" id="modal-invoice">
+        <div style="text-align: center">
+            <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Memproses...
+            </p>
+        </div>
+    </ons-modal>
+    <script>
+        var voucher;
+        function scanQrCodeContent() {
+           
+                voucher = text;
+                $.ajax({
+                    method: 'get',
+                    url: _URL + '?query= {CheckVoucherQuery(kode: "' + text + '") {jumlah}}',
+                    success: function (data) {
+                        try {
+                            let kode_value = data.data.CheckVoucherQuery.jumlah;
+                            if (kode_value > 0) {
+                                voucherValue += kode_value
+                                alert("Voucher Ditambah :)");
+                                document.querySelector('#myNavigator').popPage();
+
+                            } else {
+                                alert("Voucher tidak valid ;(");
+                            }
+                        } catch (err) {
+                            alert(err);
+                        }
+
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+
+                });
+
+
+
+            }
+        
+        // function QRcodeShow() {
+        //     QRScanner.scan(displayContents);
+        //     QRScanner.show(function (status) {
+        //         console.log(status);
+
+        //     });
+        // }
+
+
+        // function QRcodeHide() {
+        //     QRScanner.hide();
+        //     QRScanner.destroy(function (status) {
+        //         console.log(status)
+        //     });
+        // }
+
+        // function QRcode2() {
+        //     cordova.plugins.barcodeScanner.scan(
+        //         function (result) {
+        //             // alert("We got a barcode\n" +
+        //             //     "Result: " + result.text + "\n" +
+        //             //     "Format: " + result.format + "\n" +
+        //             //     "Cancelled: " + result.cancelled);
+        //                 document.querySelector('#myNavigator').popPage();
+        //         },
+        //         function (error) {
+        //             alert("Scanning failed: " + error);
+        //         },
+        //         {
+        //             preferFrontCamera: false, // iOS and Android
+        //             showFlipCameraButton: false, // iOS and Android
+        //             showTorchButton: true, // iOS and Android
+        //             torchOn: false, // Android, launch with the torch switched on (if available)
+        //             saveHistory: true, // Android, save scan history (default false)
+        //             prompt: "Place a barcode inside the scan area", // Android
+        //             resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+        //             formats: "QR_CODE", // default: all but PDF_417 and RSS_EXPANDED
+        //             disableAnimations: true, // iOS
+        //             disableSuccessBeep: false // iOS and Android
+        //         }
+        //     );
+        // }
+
+
+        ons.getScriptPage().onInit = function () {
+
+            try {
+                $("html ").css({ "opacity": "1" });
+                $("body").css({ "opacity": "1" });
+                QRcode2();
+
+            } catch (err) {
+                ons.notification.alert(err);
+            }
+        }
+
+        ons.getScriptPage().onHide = function () {
+
+            $("html").css({ "opacity": "1" });
+            $("body").css({ "opacity": "1" });
+            // QRcodeHide();
+
+        }
+    </script>
+</ons-page>

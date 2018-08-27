@@ -1,0 +1,42 @@
+<ons-page id="tambahpelanggan">
+        <ons-toolbar>
+            <div class="left">
+                <ons-back-button></ons-back-button>
+            </div>
+            <div class="center">
+                Tambah Pelanggan
+            </div>
+        </ons-toolbar>
+        <ons-card>
+            <div class="title" style="margin-left: 10%; margin-top: 5%;">
+                <strong>Masukkan Data Pelanggan</strong>
+            </div>
+            <div style="text-align: center">
+                <p>
+                    <ons-input id="nama-pelanggan" modifier="transparent" placeholder="Nama Pelanggan" float></ons-input>
+                </p>
+                <p>
+                    <ons-input id="nope-pelanggan" type="number" modifier="transparent" placeholder="Nomor Ponsel" float></ons-input>
+                </p>
+                <p>
+                    <ons-radio name="jenisKelaminPelanggan" id="radio-tipe-pembayaran" value="p" input-id="radiokl-1" checked>Pria</ons-radio>
+                    <ons-radio name="jenisKelaminPelanggan" id="radio-tipe-pembayaran" value="l" input-id="radiokl-2" checked>Wanita</ons-radio>
+                </p>
+                <ons-row>
+                    <ons-col width="48%" style="text-align: right">
+                        <ons-button id="batal-pelanggan" style="background: #ddd;">Batal</ons-button>
+                    </ons-col>
+                    <ons-col width="4%"></ons-col>
+                    <ons-col width="48%" style="text-align: left">
+                        <ons-button id="simpan-pelanggan">Simpan</ons-button>
+                    </ons-col>
+                </ons-row>
+            </div>
+        </ons-card>
+        <script>
+        ons.getScriptPage().onInit = function () {
+            Authenticate();
+        }
+
+        </script>
+    </ons-page>

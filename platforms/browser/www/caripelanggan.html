@@ -1,0 +1,137 @@
+<ons-page id="caripelanggan">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button></ons-back-button>
+        </div>
+        <div class="center">
+            Daftar Pelanggan
+        </div>
+    </ons-toolbar>
+    <p style="margin-top: 10px; width: 100%">
+        <ons-search-input placeholder="Search" style="width: 100%; background: white;" id="search-tamu" onkeyup="filterFunction()"></ons-search-input>
+    </p>
+    <ons-card>
+
+        <ons-list id="search-tamu-list" class="tamuList">
+            <ons-lazy-repeat id="infinite-list-tamu"></ons-lazy-repeat>
+
+        </ons-list>
+    </ons-card>
+    <script>
+        // var tamuLength;
+        // function getTamu(i) {
+        //     $.ajax({
+        //         method: 'get',
+        //         url: _URL_DAFTAR_TAMU,
+        //         success: function (data) {
+        //             $('#loading').remove();
+        //             let datas = data.data.users;
+        //             tamuLength=datas.length
+        //             let nama = datas[i].nama;
+        //             let id = datas[i].id;
+        //             let id_reservasi = "-";
+        //             let username = value.username;
+        //             let list = $("<ons-list-item tappable id='dataTamu-" + key + "' >" + nama + "</ons-list-item>");
+        //             $(".tamuList").append(list);
+        //             $("#dataTamu-" + key).on('click', function () {
+        //                 $('#modal-checkin').show();
+        //                 deleteAllItem();
+        //                 setDataCheckin(id_reservasi, nama);
+        //                 console.log(namacheckin);
+        //             });
+
+        //         },
+        //         error: function (data) {
+        //             console.log(data);
+        //         }
+
+        //     });
+
+        // }
+
+        ons.getScriptPage().onInit = function () {
+
+            Authenticate();
+
+            let loadingCircle = $("<div style='text-align:center;'> <ons-progress-circular id='loading'  indeterminate></ons-progress-circular></div>");
+            $(".tamuList").append(loadingCircle);
+             $.ajax({
+                 method: 'get',
+                 url: _URL_DAFTAR_TAMU,
+                 success: function(data){
+                     $('#loading').remove();
+                     let datas=data.data.users;
+                    $.each(datas, function (key, value) {
+                     let nama = value.nama;
+                     let id=value.id;
+                     let id_reservasi = "-";
+                     let username = value.username;
+                     let list = $("<ons-list-item tappable id='dataTamu-" + key + "' >" + nama + "</ons-list-item>");
+                     $(".tamuList").append(list);
+                     $("#dataTamu-" + key).on('click', function () {
+                         $('#modal-checkin').show();
+                         deleteAllItem();
+                         setDataCheckin(id_reservasi,nama,username);
+                         console.log(namacheckin);
+                     });
+                 });
+                 },
+                 error: function(data){
+                     console.log(data);
+                 }
+
+             });
+
+
+//Penggunaan Infinite Loop (Masih Error)
+
+            // var infiniteList =document.getElementById('infinite-list-tamu');
+
+            // $.ajax({
+            //     method: 'get',
+            //     url: _URL_DAFTAR_TAMU,
+            //     success: function (data) {
+            //         $('#loading').remove();
+            //         let datas = data.data.users;
+            //         console.log(datas.length);
+            //         infiniteList.delegate = {
+            //             createItemContent: function (i) {
+            //                 let nama = datas[i].nama;
+            //                 let id = datas[i].id;
+            //                 let id_reservasi = "-";
+            //                 let username = datas[i].username;
+            //                 let listItem = $("<ons-list-item tappable id='dataTamu-" + i + "' >" + nama + "</ons-list-item>");
+
+            //                 // Add onclick behavior (push new page)
+            //                 listItem.onclick = function () {
+            //                     $('#modal-checkin').show();
+            //                     deleteAllItem();
+            //                     setDataCheckin(id_reservasi, nama);
+            //                     console.log(namacheckin);
+            //                 };
+
+            //                 return listItem;
+            //             },
+            //             countItems: function () {
+            //                 return datas.length+1; // Max number of pages
+            //             }
+            //         };
+
+            //         infiniteList.refresh();
+
+
+            //     },
+            //     error: function (data) {
+            //         console.log(data);
+            //     }
+
+            // });
+
+
+
+
+
+        };
+
+    </script>
+</ons-page>

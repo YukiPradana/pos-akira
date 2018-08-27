@@ -1,0 +1,53 @@
+<ons-page id="tab">
+
+    <ons-toolbar>
+        <div class="left" style="margin-left: 10px">Akira Reflexology</div>
+        <div class="right">
+            <ons-toolbar-button>
+                <ons-icon icon="ion-navicon, material:md-more-vert" onclick="showPopover(this)"></ons-icon>
+            </ons-toolbar-button>
+        </div>
+    </ons-toolbar>
+    <ons-tabbar swipeable position="bottom">
+
+        <ons-tab page="checkin.html" label="CHECK IN" icon="ion-log-in" active>
+        </ons-tab>
+        <ons-tab page="checkout.html" label="CHECK OUT" icon="ion-log-out">
+        </ons-tab>
+    </ons-tabbar>
+
+    
+    <!--popover-->
+    <ons-popover direction="down" id="popover" cancelable>
+        <div style="padding: 10px; ">
+            <ons-list-item tappable id="profil-kasir">
+                <div class="left">
+                    <ons-icon icon="md-account" size="20px, material:25px"></ons-icon>
+                </div>
+                <div class="center">
+                    <p>Profil</p>
+                </div>
+            </ons-list-item>
+            <ons-list-item tappable id="logout-button">
+                <div class="left">
+                    <ons-icon icon="md-power" size="20px, material:25px"></ons-icon>
+                </div>
+                <div class="center">
+                    <p>Logout</p>
+                </div>
+            </ons-list-item>
+        </div>
+    </ons-popover>
+    <ons-alert-dialog id="logout-alert-dialog" modifier="rowfooter">
+        
+        <div class="alert-dialog-content">
+           Apakah anda yakin ingin Logout dari akun ini?
+        </div>
+        <div class="alert-dialog-footer">
+            <ons-alert-dialog-button id='confirmLogout' onclick="hideAlertDialogInvoice()">Ya</ons-alert-dialog-button>
+            <ons-alert-dialog-button onclick="hideAlertDialogLogout()">Batal</ons-alert-dialog-button>
+        </div>
+    </ons-alert-dialog>
+    
+  
+</ons-page>

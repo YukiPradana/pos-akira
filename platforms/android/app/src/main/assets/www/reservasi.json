@@ -1,0 +1,17 @@
+{
+    "nama": "Habibi",
+    "pesanan": [{
+        "jasa": "PT_90",
+        "harga": "100000",
+        "terapis": "Hanabli"
+    }, {
+        "jasa": "PT_90",
+        "harga": "100000",
+        "terapis": "Ajee"
+    }, {
+        "jasa": "PT_120",
+        "harga": "125000",
+        "terapis": "Ajee"
+    }],
+    "total-harga": 325000
+}

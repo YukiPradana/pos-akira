@@ -1,0 +1,63 @@
+{
+  "_from": "git+https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git",
+  "_id": "BluetoothPrinter@0.0.1-dev",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/BluetoothPrinter",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git",
+    "rawSpec": "https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git",
+    "saveSpec": "git+https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git",
+    "fetchSpec": "https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git#f731a724874b2c687ee8574b264e8e766965cf62",
+  "_spec": "https://github.com/atmosuwiryo/Cordova-Plugin-Bluetooth-Printer.git",
+  "_where": "C:\\Users\\Yuki\\posonsen",
+  "author": {
+    "name": "Syed Rehanuddin"
+  },
+  "bugs": {
+    "url": "https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-bluetooth-printer",
+    "platforms": [
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "A cordova plugin for bluetooth printer for android platform, which support text printing and POS printing.",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer#readme",
+  "keywords": [
+    "cordova",
+    "bluetooth",
+    "printer",
+    "pos",
+    "text",
+    "barcode",
+    "image",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "license": "Apache 2.0",
+  "name": "BluetoothPrinter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer.git"
+  },
+  "version": "0.0.1-dev"
+}
