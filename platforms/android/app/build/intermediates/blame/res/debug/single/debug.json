@@ -132,6 +132,10 @@
         "source": "C:\\Users\\Yuki\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\92e77b082ca733bac75745871e8b658e\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
     },
     {
+        "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-port-xhdpi_screen.png.flat",
+        "source": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\src\\main\\res\\drawable-port-xhdpi\\screen.png"
+    },
+    {
         "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_icon.png.flat",
         "source": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\icon.png"
     },
@@ -228,6 +232,10 @@
         "source": "C:\\Users\\Yuki\\.gradle\\caches\\transforms-1\\files-1.1\\barcodescanner-release-2.1.5.aar\\c4dc24a5d25c9426f41beb707edf95a4\\res\\drawable-xxhdpi\\launcher_icon.png"
     },
     {
+        "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-port-ldpi_screen.png.flat",
+        "source": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\src\\main\\res\\drawable-port-ldpi\\screen.png"
+    },
+    {
         "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-land-ldpi_screen.png.flat",
         "source": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\src\\main\\res\\drawable-land-ldpi\\screen.png"
     },
@@ -256,6 +264,10 @@
         "source": "C:\\Users\\Yuki\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\92e77b082ca733bac75745871e8b658e\\res\\layout\\notification_template_icon_group.xml"
     },
     {
+        "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-port-hdpi_screen.png.flat",
+        "source": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\src\\main\\res\\drawable-port-hdpi\\screen.png"
+    },
+    {
         "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_part_chronometer.xml.flat",
         "source": "C:\\Users\\Yuki\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\92e77b082ca733bac75745871e8b658e\\res\\layout\\notification_template_part_chronometer.xml"
     },
@@ -270,6 +282,10 @@
     {
         "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21_notification_template_custom_big.xml.flat",
         "source": "C:\\Users\\Yuki\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\92e77b082ca733bac75745871e8b658e\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-port-mdpi_screen.png.flat",
+        "source": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\src\\main\\res\\drawable-port-mdpi\\screen.png"
     },
     {
         "merged": "C:\\Users\\Yuki\\posonsen\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_lines_media.xml.flat",

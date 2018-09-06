@@ -1,4 +1,4 @@
-var _URL = 'http://77b20658.ngrok.io/graphql'
+var _URL = 'http://2ca3d64a.ngrok.io/graphql'
 
 
 var _URL_DAFTAR_TAMU = _URL + '?query={users{id,nama,username}}';
@@ -41,3 +41,5 @@ var _URL_DAFTAR_RESERVASI_DITERIMA=_URL+'?query={statusReservasi(progress: "konf
       'tamu,'+
       'kode'+    
       '}}}';
+
+      

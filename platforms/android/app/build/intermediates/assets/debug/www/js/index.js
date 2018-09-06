@@ -168,7 +168,7 @@ var deleteItem = function (angka, harga) {
         }
     }
 
-
+    console.log(arrayPemesanan.length);
     total -= harga;
     $('#total-harga').text(total);
     $("#dataPesanan" + angka).remove();
@@ -223,6 +223,10 @@ function deleteAllItemInvoice() {
     angkaIterasi2 = 1;
     voucherValue = 0;
     arrayPrintPesanan = []
+    refID =null;
+    checkoutID = null;
+    namaCheckout = null;
+    kodePembayaran = null;
 
 }
 
@@ -296,7 +300,7 @@ function getWaktu() {
 function updateStatusReservasi(id) {
     $.ajax({
         method: 'post',
-        url: _URL + '?query=mutation {updateStatusReservasi(id: ' + checkinID + ', header_reservasi_id: ' + checkinID + ', tanggal: "' + getTanggal() + ' ' + getWaktu() + '", status: "diterima", progress: "checkin"){id,tanggal,status,progress}}',
+        url: _URL + '?query=mutation {updateStatusReservasi(id: ' + 1 + ', header_reservasi_id: ' + checkinID + ', tanggal: "' + getTanggal() + ' ' + getWaktu() + '", status: "diterima", progress: "checkin"){id,tanggal,status,progress}}',
         success: function (data) {
             console.log(data);
             $('#modal-checkin-submit').hide();
@@ -388,21 +392,21 @@ function filterFunction() {
 var voucher;
 function scanQrCodeContent(kode) {
     $('#modal-qrCode').show();
-        text=kode.text;
+       let text=kode.text;
         voucher = text;
         $.ajax({
             method: 'get',
             url: _URL + '?query= {CheckVoucherQuery(kode: "' + text + '") {jumlah}}',
             success: function (data) {
                 try {
+
                     let kode_value = data.data.CheckVoucherQuery.jumlah;
+                    ons.notification.alert("jumlah :"+kode_value);
                     if (kode_value > 0) {
-                        voucherValue += kode_value
+                        voucherValue += kode_value;
                         $('#modal-qrCode').hide();
                         $('#input-kode-voucher').val(voucherValue);
                         ons.notification.alert("Voucher Ditambah :)");
-                       
-
                     } else {
                         $('#modal-qrCode').hide();
                         ons.notification.alert("Voucher tidak valid ;(");
@@ -429,7 +433,7 @@ function QRcode() {
             //     "Format: " + result.format + "\n" +
             //     "Cancelled: " + result.cancelled);
             if(result.cancelled!=true){
-                alert("QRcode terbaca:"+ result.text);
+               
                 scanQrCodeContent(result);
             }
                 
@@ -450,6 +454,20 @@ function QRcode() {
             disableSuccessBeep: false // iOS and Android
         }
     );
+}
+
+function getJamBerakhir(jam_mulai){
+    let waktu = jam_mulai;
+    let jam = waktu.substr(0, 2);
+    let menit = waktu.substr(3, 2);
+    let jam2 = Number(jam) * 60;
+    let menit2 = Number(menit);
+    let hitung = jam2 + menit2 + waktuProdukDipilih;
+    let jam3 = hitung / 60;
+    let menit3 = hitung % 60;
+    let jamnya = String(jam3).substr(0, 2);
+    let jamBerakhirReservasi = jamnya + ':' + menit3 + ':00';
+    return jamBerakhirReservasi;
 }
 
 //on init
@@ -476,6 +494,7 @@ document.addEventListener('init', function (event) {
 
         page.querySelector('#tombol-cekIn').onclick = function () {
             Authenticate();
+            let inputNama=$('#nama-checkin').val();
             $('#modal-checkin-submit').show();
             if (namacheckin != null && total > 0) {
                 if (arrayPemesanan != null && checkinID != "-") {
@@ -545,7 +564,7 @@ document.addEventListener('init', function (event) {
                 //     ons.notification.alert('unknown error');
                 // }
 
-            }else if(namacheckin == null && total > 0){
+            }else if(namacheckin == null && total > 0 && inputNama!=null ){
                 console.log('Checkin Tamu berhasil');
                 let id="-"
                 let nama=$('#nama-checkin').val();
@@ -591,7 +610,8 @@ document.addEventListener('init', function (event) {
                     }
                 });
             } else {
-                alert('isi datanya dulu :)');
+                $('#modal-checkin-submit').hide();
+                ons.notification.alert('isi datanya dulu :)');
             }
         };
 
@@ -687,7 +707,7 @@ document.addEventListener('init', function (event) {
         //Event page checkout
     } else if (page.id === 'checkout') {
         page.querySelector('#list-tamu-checkout').onclick = function () {
-            document.querySelector('#myNavigator').pushPage('invoice.html');
+            // document.querySelector('#myNavigator').pushPage('invoice.html');
         }
 
 
@@ -792,7 +812,7 @@ document.addEventListener('init', function (event) {
                 url: _URL + '?query=mutation{ CreateHeader(ref_id:"' + refID + '", tanggal:"' + getTanggal() + ' ' + getWaktu() + '",jenis:"' + tipePembayaran + '",jumlah:"' + totalPembayaran + '",referensi:"-"){id,nomor,tanggal }}',
                 success: function (data) {
                     let dataHeaderPembayaran = data.data.CreateHeader;
-                    let dataID = dataHeaderPembayaran.id;
+                    // let dataID = dataHeaderPembayaran.id;
                     console.log(data);
                     
                     try {

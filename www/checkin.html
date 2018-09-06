@@ -19,17 +19,18 @@
                     <ons-input float maxlength="20" type="search" modifier="transparent" style="width: 100%;" placeholder="Nama Pelanggan" id="nama-checkin"></ons-input>
                 </ons-col>
                 <ons-col width="2%"></ons-col>
-                <ons-col width="15%">
-                    <ons-button id="cari-pelanggan" modifier="large" style="background: #ddd;">
-                        <ons-icon icon="md-search"></ons-icon>
+                <ons-col width="33%">
+                    <ons-button id="cari-pelanggan" modifier="large" >
+                        <!-- <ons-icon icon="md-search"></ons-icon> -->
+                        Member
                     </ons-button>
                 </ons-col>
-                <ons-col width="3%"></ons-col>
-                <ons-col width="15%">
+                <!-- <ons-col width="3%"></ons-col> -->
+                <!-- <ons-col width="15%">
                     <ons-button id="tambah-pelanggan" modifier="large">
                         <ons-icon icon="md-plus"></ons-icon>
                     </ons-button>
-                </ons-col>
+                </ons-col> -->
             </ons-row>
         </ons-list-item>
         <ons-list-item modifier="nodivider">
@@ -102,13 +103,7 @@
         </ons-modal>
 
     <script>
-       
-        ons.getScriptPage().onShow = function () {
-            Authenticate();
-            document.getElementById("tanggal-transaksi").innerHTML = getTanggal() + '    ' + getWaktu();
-            total = 0;
-            document.getElementById("total-harga").innerHTML = numberWithCommas(total);
-            arrayPemesanan = [];
+        ons.getScriptPage().onInit = function () {
             $(".jasaList").empty();
             $(".terapisList").empty();
             $.ajax({
@@ -143,6 +138,14 @@
                 }
 
             });
+        }
+        ons.getScriptPage().onShow = function () {
+            Authenticate();
+            document.getElementById("tanggal-transaksi").innerHTML = getTanggal() + '    ' + getWaktu();
+            total = 0;
+            document.getElementById("total-harga").innerHTML = numberWithCommas(total);
+            arrayPemesanan = [];
+            
             try {
                 if (namacheckin === null) {
                     $('#nama-checkin').val("");

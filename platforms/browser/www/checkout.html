@@ -5,8 +5,6 @@
             <ons-icon id="pull-hook-icon" size="22px" class="pull-hook-content" icon="fa-arrow-down"></ons-icon>
         </ons-pull-hook>
         <ons-list id='list-tamu-checkout' class="checkoutList">
-
-
         </ons-list>
     </ons-card>
     <script>
@@ -22,21 +20,23 @@
                     let datas = data.data.statusReservasi;
                     console.log('cari nih');
                     console.log(datas);
-
                     $.each(datas, function (key, value) {
 
                         try {
                             let nama = value.header_reservasi_id.tamu;
                             let id = value.header_reservasi_id.id;
-                            let tanggal = value.header_reservasi_id.tanggal_reservasi;
+                            let tanggal = value.tanggal.split(" ");
                             let kode = value.header_reservasi_id.kode;
+                            if (tanggal[0] === getTanggal()) {
                             let list = $("<ons-list-item tappable id='dataTamuCheckout-" + key + "' >" + nama + "</ons-list-item>");
                             $(".checkoutList").append(list);
                             $("#dataTamuCheckout-" + key).on('click', function () {
+                             
                                 setDataCheckout(nama, id, kode);
+                                document.querySelector('#myNavigator').pushPage('invoice.html');
                                 console.log('nama checkout:' + namaCheckout);
                             });
-
+                        }
 
                         } catch (err) {
                             console.log(err);
@@ -55,16 +55,12 @@
                     console.log(data);
                 }
             })
-
         }
         ons.getScriptPage().onShow = function () {
             Authenticate();
             $('#list-tamu-checkout').empty();
-            $('#list-tamu-checkout').append('<ons-list-header style="font-size: 18px">Daftar Tamu yang Sudah Check In</ons-list-header>');
+            $('#list-tamu-checkout').append('<ons-list-header style="font-size: 18px" prevent-tap>Daftar Tamu yang Sudah Check In</ons-list-header>');
             getCheckedInUsers();//get daftar user Checkin
-
-
-
             var pullHook = document.getElementById('pull-hook-checkout');
             var icon = document.getElementById('pull-hook-icon');
             pullHook.addEventListener('changestate', function (event) {

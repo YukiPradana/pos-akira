@@ -1,0 +1,201 @@
+<ons-page id="checkin">
+    <!--isi kontennya-->
+    <ons-list>
+        
+        <ons-list-item>
+            <div class="center">
+                <ons-button id="tombol-reservasi" modifier="large">Daftar Reservasi</ons-button>
+            </div>
+        </ons-list-item>
+        <ons-list-item>
+            <hr width="98%">
+        </ons-list-item>
+    </ons-list>
+    <ons-list modifier="nodivider">
+            <ons-list-header id="tanggal-transaksi"></ons-list-header>
+        <ons-list-item modifier="nodivider">
+            <ons-row align="bottom">
+                <ons-col width="65%">
+                    <ons-input float maxlength="20" type="search" modifier="transparent" style="width: 100%;" placeholder="Nama Pelanggan" id="nama-checkin"></ons-input>
+                </ons-col>
+                <ons-col width="2%"></ons-col>
+                <ons-col width="15%">
+                    <ons-button id="cari-pelanggan" modifier="large" style="background: #ddd;">
+                        <ons-icon icon="md-search"></ons-icon>
+                    </ons-button>
+                </ons-col>
+                <ons-col width="3%"></ons-col>
+                <ons-col width="15%">
+                    <ons-button id="tambah-pelanggan" modifier="large">
+                        <ons-icon icon="md-plus"></ons-icon>
+                    </ons-button>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <ons-list-item modifier="nodivider">
+            <ons-row align="bottom">
+                <ons-col width="31%">
+                    <ons-select id="choose-sel" onchange="editSelects(event)">
+                        <select class="jasaList" id=list-jasa>
+                        </select>
+                    </ons-select>
+                </ons-col>
+                <ons-col width="3%"></ons-col>
+                <ons-col width="30%">
+                    <ons-select id="choose-sel" onchange="editSelects(event)">
+                        <select class="terapisList" id=list-terapis>
+                        </select>
+                    </ons-select>
+                </ons-col>
+                <ons-col width="3%"></ons-col>
+                <ons-col width="33%">
+                    <ons-button id="tambah" modifier="large">Tambah</ons-button>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+        <!--isi tabel tambah transaksi-->
+        <ons-list>
+            <ons-list-item style="background-color: #b0b3b7">
+                <ons-row>
+                    <ons-col width="29%">Nama Jasa</ons-col>
+                    <ons-col width="18%">Harga</ons-col>
+                    <ons-col width="18%">Terapis</ons-col>
+                    <ons-col width="5%"></ons-col>
+                </ons-row>
+            </ons-list-item>
+            <ons-list id="list-item-jasa">
+            </ons-list>
+        </ons-list>
+        <ons-list-item modifier="nodivider">
+            <ons-row style="font-size: 13px;">
+                <ons-col width="33%"></ons-col>
+                <ons-col width="33%" style="text-align: right;">Total :</ons-col>
+                <ons-col width="33%" id="total-harga"></ons-col>
+            </ons-row>
+        </ons-list-item>
+
+        <ons-list-item modifier="nodivider">
+
+
+            <ons-row>
+
+                <ons-col width="96%">
+                    <ons-button id="tombol-cekIn" modifier="large">Check In</ons-button>
+                </ons-col>
+            </ons-row>
+        </ons-list-item>
+    </ons-list>
+    <ons-modal direction="up" id="modal-checkin">
+        <div style="text-align: center">
+            <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Memuat Data...
+            </p>
+        </div>
+    </ons-modal>
+
+    <ons-modal direction="up" id="modal-checkin-submit">
+            <div style="text-align: center">
+                <p>
+                    <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Checking in...
+                </p>
+            </div>
+        </ons-modal>
+
+    <script>
+       
+        ons.getScriptPage().onShow = function () {
+            Authenticate();
+            document.getElementById("tanggal-transaksi").innerHTML = getTanggal() + '    ' + getWaktu();
+            total = 0;
+            document.getElementById("total-harga").innerHTML = numberWithCommas(total);
+            arrayPemesanan = [];
+            $(".jasaList").empty();
+            $(".terapisList").empty();
+            $.ajax({
+                method: 'get',
+                url: _URL_PRODUK_DAN_KARYAWAN,
+                success: function (data) {
+                    console.log(data);
+                    terapisData = data.data.KaryawanQuery;
+                    jasaData = data.data.produk;
+                    //list produk
+                    $.each(jasaData, function (key, value) {
+                        let id = value.id;
+                        let nama = value.nama;
+                        let harga = value.harga;
+                        let durasi= value.waktu;
+                        let list = $("<option value='basic' id=jasa-" + id + ">" + nama +"  ("+durasi+ ")</option>");
+                        $(".jasaList").append(list);
+                    });
+
+                    //list terapis
+                    $.each(terapisData, function (key, value) {
+                        let nama = value.nama;
+                        let id = value.id;
+                        let jenis_kelamin=value.jenis_kelamin;
+                        let list = $("<option value='basic' id=terapis-" + id + ">" + nama +"  ("+jenis_kelamin+")</option>");
+                        $(".terapisList").append(list);
+
+                    });
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+
+            });
+            try {
+                if (namacheckin === null) {
+                    $('#nama-checkin').val("");
+                } else if (namacheckin != null && checkinID != "-") {
+                    $('#nama-checkin').val(namacheckin);
+                    $('#list-item-jasa').empty();
+                    $.ajax({
+                        method: 'get',
+                        url: _URL + '?query={headerReservasi(id:' + checkinID + ') {detail_reservasi {' +
+                            'produk_id{id,nama,harga,waktu},' +
+                            'karyawan_id{id,nama},' +
+                            'header_reservasi_id,' +
+                            'id}}}',
+                        success: function (data) {
+                            console.log(data);
+                            $.each(data.data.headerReservasi[0].detail_reservasi, function (key, value) {
+                                console.log(value);
+                                let terapis_id = value.karyawan_id.id;
+                                let terapis = value.karyawan_id.nama;
+                                let produk = value.produk_id.nama;
+                                let id = value.id;
+                                let harga=value.produk_id.harga;
+                                var listTambah = "<ons-list-item id='dataPesanan" + angkaIterasi1 + "'><ons-row><ons-col width='29%'>" + produk + "</ons-col>" +
+                                    "<ons-col width='18%'>" + harga + "</ons-col>" +
+                                    "<ons-col width='18%'>" + terapis + "</ons-col>" +
+                                    "<ons-col width='30%'></ons-col>" +
+                                    " <ons-col width='5%'>" +
+                                    "<ons-icon icon='ion-navicon, material:md-close-circle-o' onClick='deleteItemDetail(" + angkaIterasi1 + "," + harga + "," + id + ")'></ons-icon></ons-col></ons-row><ons-list-item";
+                                $("#list-item-jasa").append(listTambah);
+                                total = total + harga;
+                                document.getElementById("total-harga").innerHTML = numberWithCommas(total);
+                                angkaIterasi1++;
+                            });
+                            $('#modal-checkin').hide();
+                        },
+                        error: function (data) {
+
+                            ons.notification.alert('Terjadi Masalah Pada koneksi ke server');
+                            $('#modal-checkin').hide();
+                            console.log(data);
+                        }
+                    });
+                } else if (namacheckin != null && checkinID == "-") {
+                    $('#nama-checkin').val(namacheckin);
+                    $('#list-item-jasa').empty();
+                    $('#modal-checkin').hide();
+                } else {
+                    $('#nama-checkin').val('');
+                }
+            } catch (err) {
+                ons.notification.alert(err);
+            }
+        };
+
+    </script>
+</ons-page>

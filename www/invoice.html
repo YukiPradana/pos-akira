@@ -81,9 +81,9 @@
         </ons-list-item>
         <ons-list-item modifier="nodivider">
             <ons-row style="font-size: 13px;">
-                <ons-col width="33%"></ons-col>
-                <ons-col width="33%" style="text-align: right;">Total :</ons-col>
-                <ons-col width="33%" id="total-harga-invoice">Rp. xxxxxxxx</ons-col>
+                <ons-col width="43%"></ons-col>
+                <ons-col width="23%" style="text-align: left;">Total </ons-col>
+                <ons-col width="33%" id="total-harga-invoice">:Rp. xxxxxxxx</ons-col>
             </ons-row>
             <ons-row style="font-size: 13px; align:'bottom'">
                 <ons-col width="18%">
@@ -93,18 +93,18 @@
                     <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Non-Tunai" input-id="radio-2">Non-Tunai</ons-radio>
                 </ons-col>
 
-                <ons-col width="20%" style="text-align: right;">Nominal :</ons-col>
-                <ons-col width="7%">Rp.</ons-col>
+                <ons-col width="27%" style="text-align: left;">Nominal </ons-col>
+                
                 <ons-col width="26%" style="text-align: left;">
                     <label>
-                        <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="20" placeholder="" onkeyup="inputTunaiFormat()"></ons-input>
+                        <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="7" placeholder="" onkeyup="inputTunaiFormat()"></ons-input>
                     </label>
                 </ons-col>
             </ons-row>
             <ons-row style="font-size: 13px;">
-                <ons-col width="33%"></ons-col>
-                <ons-col width="33%" style="text-align: right;">Kembali :</ons-col>
-                <ons-col width="33%" id="kembalian">Rp. xxxxxxxx</ons-col>
+                <ons-col width="43%"></ons-col>
+                <ons-col width="23%" style="text-align: left;">Kembali </ons-col>
+                <ons-col width="33%" id="kembalian">: xxxxxxxx</ons-col>
             </ons-row>
         </ons-list-item>
         <ons-list-item modifier="nodivider">
@@ -242,7 +242,7 @@
                         totalPembayaran = totalPembayaran + harga;
                         // angkaIterasi2++;
                     });
-                    $("#total-harga-invoice").html(numberWithCommas(totalPembayaran));
+                    $("#total-harga-invoice").html(":"+numberWithCommas(totalPembayaran));
                     modal.hide();
 
                     console.log(arrayPrintPesanan);

@@ -3,7 +3,7 @@
   "display": "standalone",
   "name": "AkiraPos",
   "short_name": "AkiraPos",
-  "version": "io.cordova.hellocordova",
+  "version": "io.akira.pos",
   "description": "Aplikasi kasir Akira Reflexology berbasis android",
   "author": "Apache Cordova Team",
   "icons": [],

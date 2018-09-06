@@ -1,0 +1,96 @@
+<ons-page id="profile">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button></ons-back-button>
+        </div>
+        <div class="center">Profil</div>
+    </ons-toolbar>
+    <ons-card>
+        <div>
+            <div style="text-align: center; margin-top: 5%; margin-bottom: 5%; ">
+                <img src="img/myAvatar.png" alt="" style="max-width: 120px; max-height: 120px;border-radius: 50%;">
+            </div>
+            <div class="center" id="userName" style="text-align: center; margin-top: 5%; margin-bottom: 5%; ">
+                <strong id="nama-user"></strong>
+            </div>
+        </div>
+    </ons-card>
+
+    <ons-card>
+        <div class="center" id="userName" style=" margin-left: 10%">
+            <strong>Ganti Password</strong>
+        </div>
+        <div style="text-align: center;">
+            <p>
+                <ons-input id="pass-lama-kasir" type="password" modifier="transparent" placeholder="Password Lama" float class="inputProfile"></ons-input>
+            </p>
+            <p>
+                <ons-input id="pass-baru-kasir" type="password" modifier="transparent" placeholder="Password Baru" float class="inputProfile"></ons-input>
+            </p>
+            <p>
+                <ons-input id="konf-pass-baru-kasir" type="password" modifier="transparent" placeholder="Konfirmasi Password" float class="inputProfile"></ons-input>
+            </p>
+
+
+            <ons-button id="simpan-kasir" align="center">Oke</ons-button>
+
+
+        </div>
+        
+    </ons-card>
+    <ons-modal direction="up" id="ons-modal3">
+            <div style="text-align: center">
+              <p>
+                <ons-icon icon="md-spinner" size="28px" spin></ons-icon> Mengganti Password...
+              </p>
+            </div>
+          </ons-modal>
+    <script>
+        function hapusValuePass(){
+            $('#pass-lama-kasir').val('');
+            $('#pass-baru-kasir').val('');
+            $('#konf-pass-baru-kasir').val('');
+        }
+        ons.getScriptPage().onInit = function () {
+            let nama_user = getUser();
+            $('#nama-user').html(nama_user);
+
+            $('#simpan-kasir').on('click',function(){
+
+                let sandiLama = document.getElementById("pass-lama-kasir").value;
+            let sandiBaru = document.getElementById("pass-baru-kasir").value;
+            let sandiBaruLagi = document.getElementById("konf-pass-baru-kasir").value;
+            if (sandiBaru === sandiBaruLagi) {
+               $('#ons-modal3').show();
+                $.ajax({
+                    type: 'POST',
+                    url: _URL + '?query=mutation{resetPassword(username:"' + _ID_USER + '", password: "' + sandiLama + '", new_password:"' + sandiBaru + '") {nama}}',
+                    success: function (data) {
+                        if (data.data.resetPassword.nama == null) {
+                            document.querySelector('#ons-modal3').hide();
+                            ons.notification.alert("katasandi lama anda salah");
+                        } else {
+                            document.querySelector('#ons-modal3').hide();
+                            ons.notification.alert("katasandi diperbaharui " + data.data.resetPassword.nama);
+                            
+                        }
+                        hapusValuePass();
+                        console.log(data);
+                        console.log(data.data.resetPassword.nama);
+                    }, error: function (data) {
+                        document.querySelector('#ons-modal3').hide();
+                        ons.notification.alert("katasandi lama anda salah");
+                        hapusValuePass();
+                        console.log(data);
+                    }
+                });
+            } else {
+                document.querySelector('#ons-modal3').hide();
+                ons.notification.alert("katasandi baru tidak cocok");
+                document.getElementById("kataSandi-baru").value = null;
+                document.getElementById("kataSandi-barulagi").value = null;
+            }
+            });
+        }
+    </script>
+</ons-page>

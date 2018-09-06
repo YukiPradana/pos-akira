@@ -65,13 +65,14 @@
                      let nama = value.nama;
                      let id=value.id;
                      let id_reservasi = "-";
+                     let kode="-";
                      let username = value.username;
                      let list = $("<ons-list-item tappable id='dataTamu-" + key + "' >" + nama + "</ons-list-item>");
                      $(".tamuList").append(list);
                      $("#dataTamu-" + key).on('click', function () {
                          $('#modal-checkin').show();
                          deleteAllItem();
-                         setDataCheckin(id_reservasi,nama,username);
+                         setDataCheckin(id_reservasi,nama,username,kode);
                          console.log(namacheckin);
                      });
                  });

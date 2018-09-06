@@ -54,7 +54,7 @@ function Login(uname, pass) {
         error: function (data) {
 
             console.log(data);
-            ons.notification.alert('Username atau Password salah');
+            alert(data.status);
             $('#modal-login').hide();
         }
 
