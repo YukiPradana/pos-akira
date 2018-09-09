@@ -847,7 +847,7 @@ document.addEventListener('init', function (event) {
 
             $.ajax({
                 method: 'post',
-                url: _URL + '?query=mutation{ CreateHeader(ref_id:"' + refID + '", tanggal:"' + getTanggal() + ' ' + getWaktu() + '",jenis:"' + tipePembayaran + '",jumlah:"' + totalPembayaran + '",referensi:"-"){id,nomor,tanggal }}',
+                url: _URL + '?query=mutation{ CreateHeader(ref_id:"' + refID + '", tanggal:"' + getTanggal() + ' ' + getWaktu() + '",jenis:"' + tipePembayaran + '",jumlah:"' + totalPembayaran + '",referensi:"-", diskon:"'+voucherValue+'"){id,nomor,tanggal }}',
                 success: function (data) {
                     let dataHeaderPembayaran = data.data.CreateHeader;
                     // let dataID = dataHeaderPembayaran.id;

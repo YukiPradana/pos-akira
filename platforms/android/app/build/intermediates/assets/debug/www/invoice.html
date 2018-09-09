@@ -54,22 +54,21 @@
 
             </ons-list>
         </ons-list>
-        <ons-list-item modifier="nodivider">
+        <!-- <ons-list-item modifier="nodivider">
             <ons-row>
                 <ons-col width=48%>
                     <ons-input id="input-ppn" type="number" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="PPN"></ons-input>
                 </ons-col>
                 <ons-col width=4%></ons-col>
                 <ons-col width=48%>
-                    <ons-input id="input-diskon" type="number" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="Diskon"></ons-input>
                 </ons-col>
             </ons-row>
-        </ons-list-item>
+        </ons-list-item> -->
         <!--tombol scan barcode-->
         <ons-list-item modifier="nodivider">
             <ons-row align="bottom">
                 <ons-col width="48%">
-                    <ons-input id="input-kode-voucher" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="Nilai voucher"></ons-input>
+                    <ons-input id="input-kode-voucher" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="Nilai voucher" readonly></ons-input>
                 </ons-col>
                 <ons-col width="2%"></ons-col>
                 <ons-col width="50%">
@@ -81,9 +80,9 @@
         </ons-list-item>
         <ons-list-item modifier="nodivider">
             <ons-row style="font-size: 13px;">
-                <ons-col width="33%"></ons-col>
-                <ons-col width="33%" style="text-align: right;">Total :</ons-col>
-                <ons-col width="33%" id="total-harga-invoice">Rp. xxxxxxxx</ons-col>
+                <ons-col width="43%"></ons-col>
+                <ons-col width="23%" style="text-align: left;">Total </ons-col>
+                <ons-col width="33%" id="total-harga-invoice">:Rp. xxxxxxxx</ons-col>
             </ons-row>
             <ons-row style="font-size: 13px; align:'bottom'">
                 <ons-col width="18%">
@@ -93,18 +92,18 @@
                     <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Non-Tunai" input-id="radio-2">Non-Tunai</ons-radio>
                 </ons-col>
 
-                <ons-col width="20%" style="text-align: right;">Nominal :</ons-col>
-                <ons-col width="7%">Rp.</ons-col>
+                <ons-col width="27%" style="text-align: left;">Nominal </ons-col>
+                
                 <ons-col width="26%" style="text-align: left;">
                     <label>
-                        <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="20" placeholder="" onkeyup="inputTunaiFormat()"></ons-input>
+                        <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="7" placeholder="" onkeyup="inputTunaiFormat()"></ons-input>
                     </label>
                 </ons-col>
             </ons-row>
             <ons-row style="font-size: 13px;">
-                <ons-col width="33%"></ons-col>
-                <ons-col width="33%" style="text-align: right;">Kembali :</ons-col>
-                <ons-col width="33%" id="kembalian">Rp. xxxxxxxx</ons-col>
+                <ons-col width="43%"></ons-col>
+                <ons-col width="23%" style="text-align: left;">Kembali </ons-col>
+                <ons-col width="33%" id="kembalian">: xxxxxxxx</ons-col>
             </ons-row>
         </ons-list-item>
         <ons-list-item modifier="nodivider">
@@ -242,7 +241,7 @@
                         totalPembayaran = totalPembayaran + harga;
                         // angkaIterasi2++;
                     });
-                    $("#total-harga-invoice").html(numberWithCommas(totalPembayaran));
+                    $("#total-harga-invoice").html(":"+numberWithCommas(totalPembayaran));
                     modal.hide();
 
                     console.log(arrayPrintPesanan);

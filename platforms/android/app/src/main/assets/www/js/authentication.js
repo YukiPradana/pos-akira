@@ -13,7 +13,7 @@ function Login(uname, pass) {
 
     $.ajax({
         method: 'post',
-        url: _URL + '?query=mutation{ Authenticate(input: {username: "' + uname + '", password: "' + pass + '"}) {' +
+        url: _URL + '?query=mutation{ Authenticate(input: {username: "' + uname + '", password: "' + pass + '",fcm_token:""}) {' +
             'token,' +
             'user {' +
             'id,' +

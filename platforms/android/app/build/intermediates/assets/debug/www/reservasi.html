@@ -15,23 +15,23 @@
     </ons-card>
 
     <script>
-        function getNamaReservasi(username) {
-            $.ajax({
-                method: 'get',
-                url: _URL_DAFTAR_RESERVASI_DITERIMA,
-                success: function (data) {
-                    $("#loading").remove();
-                    console.log(data);
-                    let nama = data.data.users.nama;
-                    return nama;
-                },
-                error: function (data) {
-                    console.log(data);
-                    return "Nama tidak ditemukan";
-                }
+        // function getNamaReservasi(username) {
+        //     $.ajax({
+        //         method: 'get',
+        //         url: _URL_DAFTAR_RESERVASI_DITERIMA,
+        //         success: function (data) {
+        //             $("#loading").remove();
+        //             console.log(data);
+        //             let nama = data.data.users.nama;
+        //             return nama;
+        //         },
+        //         error: function (data) {
+        //             console.log(data);
+        //             return "Nama tidak ditemukan";
+        //         }
 
-            });
-        }
+        //     });
+        // }
         ons.getScriptPage().onShow = function () {
             Authenticate();
             let loadingCircle = $("<div style='text-align:center;'> <ons-progress-circular id='loading'  indeterminate></ons-progress-circular></div>");
@@ -49,16 +49,18 @@
                         console.log(tanggalReservasi);
                         tanggalReservasi = tanggalReservasi.split(" ");
                         console.log(tanggalReservasi[0]);
-                        let kode = value.kode;
+                        let kode = value.header_reservasi_id.kode;
+
                         if (tanggalReservasi[0] === getTanggal()) {
                             let list = $("<ons-list-item tappable id='dataReservasi-" + key + "' >" + username + "</ons-list-item>");
                             $(".reservasiList").append(list);
                             $("#dataReservasi-" + key).on('click', function () {
                                 $('#modal-checkin').show();
                                 deleteAllItem();
-                                let nama = getNamaReservasi(username);
-                                setDataCheckin(id, username, username);
+                                // let nama = getNamaReservasi(username);
+                                setDataCheckin(id, username, username,kode);
                                 console.log(namacheckin);
+                                console.log("Kode :"+refIDCheckin);
                             });
                         }
                     });
