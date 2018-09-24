@@ -40,9 +40,11 @@
                 method: 'get',
                 url: _URL_DAFTAR_RESERVASI_DITERIMA,
                 success: function (data) {
-                    $("#loading").remove();
+                    
                     console.log(data);
+                    
                     $.each(data.data.statusReservasi, function (key, value) {
+                        if(value.header_reservasi_id!=null){
                         let username = value.header_reservasi_id.tamu;
                         let id = value.header_reservasi_id.id;
                         let tanggalReservasi = value.header_reservasi_id.tanggal_reservasi;
@@ -52,18 +54,38 @@
                         let kode = value.header_reservasi_id.kode;
 
                         if (tanggalReservasi[0] === getTanggal()) {
-                            let list = $("<ons-list-item tappable id='dataReservasi-" + key + "' >" + username + "</ons-list-item>");
-                            $(".reservasiList").append(list);
-                            $("#dataReservasi-" + key).on('click', function () {
-                                $('#modal-checkin').show();
-                                deleteAllItem();
-                                // let nama = getNamaReservasi(username);
-                                setDataCheckin(id, username, username,kode);
-                                console.log(namacheckin);
-                                console.log("Kode :"+refIDCheckin);
+                            $.ajax({
+                                method: 'get',
+                                url: _URL + '?query= {users(username:"'+ username +'"){nama,jenis_kelamin}}',
+                                success: function (datas) {
+                                    $("#loading").remove();
+                                    console.log(datas);
+                                    let nama= datas.data.users[0].nama;
+                                    console.log(nama);
+                                    let list = $("<ons-list-item tappable id='dataReservasi-" + key + "' >" + nama + "</ons-list-item>");
+                                    $(".reservasiList").append(list);
+                                    $("#dataReservasi-" + key).on('click', function () {
+                                        $('#modal-checkin').show();
+                                        deleteAllItem();
+                                        // let nama = getNamaReservasi(username);
+                                        setDataCheckin(id, nama, username, kode);
+                                        console.log(namacheckin);
+                                        console.log("Kode :" + refIDCheckin);
+                                    });
+                                
+                                },
+                                error: function (data) {
+                                    console.log(data);
+                                    return id;
+                                }
+
+
                             });
                         }
+                        
+                        }
                     });
+                
                 },
                 error: function (data) {
                     console.log(data);

@@ -1,4 +1,4 @@
-var _URL = 'http://25dcb11c.ngrok.io/graphql'
+var _URL = 'http://85941bf0.ngrok.io/graphql'
 
 
 var _URL_DAFTAR_TAMU = _URL + '?query={users{id,nama,username}}';

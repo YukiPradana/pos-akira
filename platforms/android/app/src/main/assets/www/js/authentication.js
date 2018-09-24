@@ -4,6 +4,7 @@ var _EXPIRED_DATE_TOKEN;
 var _NAMA_USER;
 var _ID_USER;
 var _USERNAME;
+var _JENIS_KELAMIN;
 
 function Login(uname, pass) {
 
@@ -18,7 +19,8 @@ function Login(uname, pass) {
             'user {' +
             'id,' +
             'nama,' +
-            'username}}}',
+            'username,' +
+            'jenis_kelamin}}}',
         success: function (data) {
 
             console.log('Tersambung');
@@ -31,6 +33,7 @@ function Login(uname, pass) {
                 _EXPIRED_DATE_TOKEN = anHour;
                 _ID_USER = dataAuth.user.id;
                 _USERNAME = dataAuth.user.username;
+                _JENIS_KELAMIN=dataAuth.user.jenis_kelamin;
                 // if(_STORAGE.getItem('token')){     //Debug
                 //     _STORAGE.removeItem('token');
                 // };
@@ -41,6 +44,7 @@ function Login(uname, pass) {
                 _STORAGE.setItem('expired_date_token', _EXPIRED_DATE_TOKEN);
                 _STORAGE.setItem('id_user', _ID_USER);
                 _STORAGE.setItem('username', _USERNAME);
+                _STORAGE.setItem('jenis_kelamin', _JENIS_KELAMIN);
                 console.log(_STORAGE.getItem('token'));
                 if (_STORAGE.getItem('token')) {
                     document.querySelector('#myNavigator').replacePage('tab.html');
@@ -73,6 +77,7 @@ function Logout() {
     _STORAGE.removeItem('expired_date_token');
     _STORAGE.removeItem('id_user');
     _STORAGE.removeItem('username');
+    _STORAGE.removeItem('jenis_kelamin');
     document.querySelector('#myNavigator').resetToPage('login.html');
 
 }
@@ -103,9 +108,9 @@ function LoginAuthenticate() {
             _TOKEN = localStorage.getItem('token');
             _NAMA_USER = localStorage.getItem('nama_user');
             _EXPIRED_DATE_TOKEN = expired_date;
-            _ID_USER=localStorage.getItem('id_user');
-            _USERNAME=localStorage.getItem('username');
-            
+            _ID_USER = localStorage.getItem('id_user');
+            _USERNAME = localStorage.getItem('username');
+            _JENIS_KELAMIN=localStorage.getItem('jenis_kelamin');
             document.querySelector('#myNavigator').pushPage('tab.html');
         } else {
             ons.notification.alert('Session berakhir, harus login ulang');
@@ -114,6 +119,7 @@ function LoginAuthenticate() {
             _STORAGE.removeItem('expired_date_token');
             _STORAGE.removeItem('id_user');
             _STORAGE.removeItem('username');
+            _STORAGE.removeItem('jenis_kelamin');
             document.querySelector('#myNavigator').pushPage('login.html');
         }
     } else {
@@ -125,6 +131,9 @@ function getUser() {
     return localStorage.getItem('nama_user');
 }
 
-function getIDUser(){
+function getIDUser() {
     return _ID_USER;
+}
+function getJenisKelamin(){
+    return _JENIS_KELAMIN;
 }

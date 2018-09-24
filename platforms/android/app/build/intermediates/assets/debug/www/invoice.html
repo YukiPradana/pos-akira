@@ -65,10 +65,18 @@
             </ons-row>
         </ons-list-item> -->
         <!--tombol scan barcode-->
+        <hr>
+        <ons-list-item modifier="nodivider" style="background-color:#fdff93">
+            <ons-row>
+                <ons-col width="40%" style="text-align: left;margin: auto"><b>Total</b> </ons-col>
+                <ons-col width="60%" id="total-harga-invoice" style="margin:auto;">:Rp. xxxxxxxx</ons-col>
+            </ons-row>
+        </ons-list-item>
         <ons-list-item modifier="nodivider">
             <ons-row align="bottom">
                 <ons-col width="48%">
-                    <ons-input id="input-kode-voucher" modifier="transparent" float maxlength="20" style="width: 100%;" placeholder="Nilai voucher" readonly></ons-input>
+                    <ons-input id="input-kode-voucher" modifier="transparent" float maxlength="20" style="width: 100%;"
+                        placeholder="Nilai voucher" readonly></ons-input>
                 </ons-col>
                 <ons-col width="2%"></ons-col>
                 <ons-col width="50%">
@@ -79,40 +87,45 @@
             </ons-row>
         </ons-list-item>
         <ons-list-item modifier="nodivider">
-            <ons-row style="font-size: 13px;">
-                <ons-col width="43%"></ons-col>
-                <ons-col width="23%" style="text-align: left;">Total </ons-col>
-                <ons-col width="33%" id="total-harga-invoice">:Rp. xxxxxxxx</ons-col>
-            </ons-row>
-            <ons-row style="font-size: 13px; align:'bottom'">
-                <ons-col width="18%">
-                    <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Tunai" input-id="radio-1" checked>Tunai</ons-radio>
-                </ons-col>
-                <ons-col width="25%">
-                    <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Non-Tunai" input-id="radio-2">Non-Tunai</ons-radio>
-                </ons-col>
 
-                <ons-col width="27%" style="text-align: left;">Nominal </ons-col>
-                
-                <ons-col width="26%" style="text-align: left;">
-                    <label>
-                        <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="7" placeholder="" onkeyup="inputTunaiFormat()"></ons-input>
-                    </label>
+            <ons-row style=" align:'bottom';margin: auto">
+                <ons-col width="50%" style="text-align: right; margin-right: 10%">
+                    <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Tunai" input-id="radio-1"
+                        checked>Tunai</ons-radio>
                 </ons-col>
+                <ons-col width="40%">
+                    <ons-radio name="tipePembayaran" id="radio-tipe-pembayaran" value="Non-Tunai" input-id="radio-2">Non-Tunai</ons-radio>
             </ons-row>
-            <ons-row style="font-size: 13px;">
-                <ons-col width="43%"></ons-col>
-                <ons-col width="23%" style="text-align: left;">Kembali </ons-col>
-                <ons-col width="33%" id="kembalian">: xxxxxxxx</ons-col>
+
+        </ons-list-item>
+
+        <ons-list-item modifier="nodivider">
+            <ons-row>
+                <ons-col width="40%" style="text-align: left;margin: auto">Total yang harus dibayar </ons-col>
+                <ons-col width="60%" id="total-harga-dibayar-invoice" style="margin:auto;">:Rp. xxxxxxxx</ons-col>
+            </ons-row>
+        </ons-list-item>
+
+        <ons-list-item modifier="nodivider">
+            <ons-row>
+                <ons-col width="40%" style="text-align: left;margin: auto">Input</ons-col>
+                :
+                <ons-input id="input-tunai" type="number" modifier="transparent" maxlength="7" placeholder="Masukan input disini"
+                    onkeyup="inputTunaiFormat()" style="margin: auto"></ons-input>
             </ons-row>
         </ons-list-item>
         <ons-list-item modifier="nodivider">
             <ons-row>
-                <ons-col width="52%"></ons-col>
-                <ons-col width="48%">
-                    <ons-button id="tombol-print" modifier="large">Proses</ons-button>
-                </ons-col>
+                <ons-col width="40%" style="text-align: left;margin: auto">Kembali</ons-col>
+                <ons-col width="60%" id="kembalian" style="margin: auto">: xxxxxxxx</ons-col>
             </ons-row>
+        </ons-list-item>
+
+
+        <ons-list-item modifier="nodivider" > 
+                
+                    <ons-button id="tombol-print" modifier="large" style="margin:auto" >Proses</ons-button>
+               
         </ons-list-item>
     </ons-list>
 
@@ -239,9 +252,11 @@
                             "</ons-row><ons-list-item");
                         $("#list-item-invoice").append(list);
                         totalPembayaran = totalPembayaran + harga;
+                        totalPembayaranDibayar=totalPembayaranDibayar+harga;
                         // angkaIterasi2++;
                     });
-                    $("#total-harga-invoice").html(":"+numberWithCommas(totalPembayaran));
+                    $("#total-harga-invoice").html(":" + numberWithCommas(totalPembayaran));
+                    $("#total-harga-dibayar-invoice").html(":" + numberWithCommas(totalPembayaranDibayar));
                     modal.hide();
 
                     console.log(arrayPrintPesanan);

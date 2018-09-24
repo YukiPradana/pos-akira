@@ -81,6 +81,7 @@ var nomorTransaksi;
 var jumlahJasa = [];
 var total = 0;
 var totalPembayaran = 0;
+var totalPembayaranDibayar = 0;
 var jsonAsset = "";
 var jsonAsset2 = "";
 var namaCheckout;
@@ -112,11 +113,11 @@ function setDataCheckout(nama, id, kode) {
     kodePembayaran = kode;
 }
 
-function setDataCheckin(id, nama, username,kode) {
+function setDataCheckin(id, nama, username, kode) {
     checkinID = id;
     namacheckin = nama;
     checkinUname = username;
-    refIDCheckin=kode;
+    refIDCheckin = kode;
 }
 
 
@@ -189,7 +190,10 @@ var deleteItemInvoice = function (angka, harga) {
     }
     console.log("angka iterasi :" + angka);
     totalPembayaran -= harga;
+    totalPembayaranDibayar-=harga;
     $('#total-harga-invoice').text(totalPembayaran);
+    let nilai=setTotalPembayaranDibayarView(totalPembayaranDibayar);
+    $('#total-harga-dibayar-invoice').text(nilai);
     $("#dataInvoice-" + angka).remove();
 }
 
@@ -208,7 +212,7 @@ function deleteAllItem() {
     $('#nama-checkin').val(namacheckin);
     angkaIterasi1 = 1;
     checkinID = null;
-    refIDCheckin=null;
+    refIDCheckin = null;
 
 
 }
@@ -225,11 +229,12 @@ function deleteAllItemInvoice() {
     jsonPrint2 = null;
     angkaIterasi2 = 1;
     voucherValue = 0;
-    arrayPrintPesanan = []
-    refID =null;
+    arrayPrintPesanan = [];
+    refID = null;
     checkoutID = null;
     namaCheckout = null;
     kodePembayaran = null;
+    totalPembayaranDibayar=0;
 
 }
 
@@ -300,15 +305,30 @@ function getWaktu() {
     return timeString;
 }
 
-function terimaReservasi(referId){
-    console.log("ididid:"+referId);
+function getNamaReservasi(id){
+    $.ajax({
+        method: 'get',
+        url: _URL + '?query= {users(username:"'+id+'"){nama,jenis_kelamin}}',
+        success: function (data) {
+           return data.data.users.nama
+        },
+        error: function (data) {
+            console.log(data);
+            return id;
+        }
+    });
+
+}
+
+function terimaReservasi(referId) {
+    console.log("ididid:" + referId);
     $.ajax({
         method: 'post',
-        url: _URL + '?query=mutation {TerimaReservasi(ref_id:"'+referId+'"){status,progress}}',
+        url: _URL + '?query=mutation {TerimaReservasi(ref_id:"'+ referId +'"){status,progress}}',
         success: function (data) {
             $.ajax({
                 method: 'post',
-                url: _URL + '?query=mutation {CheckinReservasi(ref_id:"'+referId+'"){status,progress}}',
+                url: _URL + '?query=mutation {CheckinReservasi(ref_id:"'+ referId +'"){status,progress}}',
                 success: function (data) {
                     console.log(data);
                     $('#modal-checkin-submit').hide();
@@ -325,15 +345,12 @@ function terimaReservasi(referId){
             console.log(data);
         }
     });
-
 }
-
-
 function updateStatusReservasi(id) {
-    console.log("ididid:"+id);
+    console.log("ididid:" + id);
     $.ajax({
         method: 'post',
-        url: _URL + '?query=mutation {CheckinReservasi(ref_id:"'+id+'"){status,progress}}',
+        url: _URL + '?query=mutation {CheckinReservasi(ref_id:"' + id + '"){status,progress}}',
         success: function (data) {
             console.log(data);
             $('#modal-checkin-submit').hide();
@@ -396,16 +413,24 @@ function inputTunaiFormat() {
 
 }
 
+function setTotalPembayaranDibayarView(a) {
+    if (totalPembayaranDibayar <= 0) {
+        return 0;
+    } else {
+        return a;
+    }
+}
+
 function kembalianOutput() {
     let inputUang = $('#input-tunai').val();
-    kembalian = inputUang - totalPembayaran;
-    if (kembalian > 0 ) {
-        if(kembalian<totalPembayaran){
-        $('#kembalian').html(numberWithCommas(kembalian));
-        }else{
+    kembalian = inputUang - totalPembayaranDibayar;
+    if (kembalian > 0) {
+        if (kembalian < totalPembayaranDibayar) {
+            $('#kembalian').html(numberWithCommas(kembalian));
+        } else {
             $('#kembalian').html("Input terlalu banyak");
         }
-    }else{
+    } else {
         $('#kembalian').html(0);
     }
 }
@@ -429,38 +454,41 @@ function filterFunction() {
 var voucher;
 function scanQrCodeContent(kode) {
     $('#modal-qrCode').show();
-       let text=kode.text;
-        voucher = text;
-        $.ajax({
-            method: 'get',
-            url: _URL + '?query= {CheckVoucherQuery(kode: "' + text + '") {jumlah}}',
-            success: function (data) {
-                try {
+    let text = kode.text;
+    voucher = text;
+    $.ajax({
+        method: 'get',
+        url: _URL + '?query= {CheckVoucherQuery(kode: "' + text + '") {jumlah}}',
+        success: function (data) {
+            try {
 
-                    let kode_value = data.data.CheckVoucherQuery.jumlah;
-                    ons.notification.alert("jumlah :"+kode_value);
-                    if (kode_value > 0) {
-                        voucherValue += kode_value;
-                        $('#modal-qrCode').hide();
-                        $('#input-kode-voucher').val(voucherValue);
-                        ons.notification.alert("Voucher Ditambah :)");
-                    } else {
-                        $('#modal-qrCode').hide();
-                        ons.notification.alert("Voucher tidak valid ;(");
-                    }
-                } catch (err) {
+                let kode_value = data.data.CheckVoucherQuery.jumlah;
+                ons.notification.alert("jumlah :" + kode_value);
+                if (kode_value > 0) {
+                    voucherValue = kode_value;
                     $('#modal-qrCode').hide();
-                    alert(err);
+                    $('#input-kode-voucher').val(voucherValue);
+                    totalPembayaranDibayar - voucherValue;
+                    let nilai = setTotalPembayaranDibayarView(totalPembayaranDibayar);
+                    $("#total-harga-dibayar-invoice").html(":" + numberWithCommas(nilai));
+                    ons.notification.alert("Voucher Ditambah :)");
+                } else {
+                    $('#modal-qrCode').hide();
+                    ons.notification.alert("Voucher tidak valid ;(");
                 }
-                
-                
-            },
-            error: function (data) {
+            } catch (err) {
                 $('#modal-qrCode').hide();
-                console.log(data);
+                alert(err);
             }
-        });
-    }
+
+
+        },
+        error: function (data) {
+            $('#modal-qrCode').hide();
+            console.log(data);
+        }
+    });
+}
 
 function QRcode() {
     cordova.plugins.barcodeScanner.scan(
@@ -469,11 +497,11 @@ function QRcode() {
             //     "Result: " + result.text + "\n" +
             //     "Format: " + result.format + "\n" +
             //     "Cancelled: " + result.cancelled);
-            if(result.cancelled!=true){
-               
+            if (result.cancelled != true) {
+
                 scanQrCodeContent(result);
             }
-                
+
         },
         function (error) {
             alert("Scanning failed: " + error);
@@ -493,7 +521,7 @@ function QRcode() {
     );
 }
 
-function getJamBerakhir(jam_mulai){
+function getJamBerakhir(jam_mulai) {
     let waktu = jam_mulai;
     let jam = waktu.substr(0, 2);
     let menit = waktu.substr(3, 2);
@@ -510,8 +538,6 @@ function getJamBerakhir(jam_mulai){
 //on init
 document.addEventListener('init', function (event) {
     var page = event.target;
-
-
 
 
     // Event page Checkin
@@ -531,7 +557,7 @@ document.addEventListener('init', function (event) {
 
         page.querySelector('#tombol-cekIn').onclick = function () {
             Authenticate();
-            let inputNama=$('#nama-checkin').val();
+            let inputNama = $('#nama-checkin').val();
             $('#modal-checkin-submit').show();
             if (namacheckin != null && total > 0) {
                 if (arrayPemesanan != null && checkinID != "-") {
@@ -560,7 +586,7 @@ document.addEventListener('init', function (event) {
                         success: function (data) {
                             console.log(data);
                             checkinID = data.data.createHeaderReservasi.id;
-                            refIDCheckin= data.data.createHeaderReservasi.kode;
+                            refIDCheckin = data.data.createHeaderReservasi.kode;
                             console.log(checkinID);
                             if (arrayPemesanan.length > 1) {
                                 console.log(arrayPemesanan);
@@ -601,11 +627,11 @@ document.addEventListener('init', function (event) {
                 //     ons.notification.alert('unknown error');
                 // }
 
-            }else if(namacheckin == null && total > 0 && inputNama!=null ){
+            } else if (namacheckin == null && total > 0 && inputNama != null) {
                 console.log('Checkin Tamu berhasil');
-                let id="-"
-                let nama=$('#nama-checkin').val();
-                let username="tamu-"+nama;
+                let id = "-"
+                let nama = $('#nama-checkin').val();
+                let username = "tamu-" + nama;
                 setDataCheckin(id, nama, username);
                 $.ajax({
                     method: 'post',
@@ -615,7 +641,7 @@ document.addEventListener('init', function (event) {
                     success: function (data) {
                         console.log(data);
                         checkinID = data.data.createHeaderReservasi.id;
-                        refIDCheckin= data.data.createHeaderReservasi.kode;
+                        refIDCheckin = data.data.createHeaderReservasi.kode;
                         console.log(checkinID);
                         if (arrayPemesanan.length > 1) {
                             console.log(arrayPemesanan);
@@ -759,8 +785,8 @@ document.addEventListener('init', function (event) {
             // } catch (err) {
             //     ons.notification.alert(err);
             // }
-            QRcode() 
-                
+            QRcode()
+
         };
 
         $('#input-kode-voucher').on('change', function () {
@@ -771,14 +797,14 @@ document.addEventListener('init', function (event) {
             Authenticate();
             let modal = document.querySelector('#modal-invoice');
             modal.show();
-            
-            for (i = 0; i < arrayPembayaran.length; i++) {
+
+            for (i = 0; i < arrayPrintPesanan.length; i++) {
+                console.log(arrayPrintPesanan[i].string);
                 printAsset += arrayPrintPesanan[i].string;
             }
-            for (i = 0; i < arrayPrintTerapis.length; i++) {
-                printAssetTerapis += arrayPrintTerapis[i].string;
-            }
+
             console.log(arrayPrintPesanan);
+            console.log(printAsset);
             tunai = $('#input-tunai').val();
             tipePembayaran = $('input[name=tipePembayaran]:checked').val();
             console.log('Tipe Pembayaran:' + tipePembayaran);
@@ -793,8 +819,7 @@ document.addEventListener('init', function (event) {
                 '-------------------------------- \n' +
                 printAsset +
                 '-------------------------------- \n' +
-                'Terapis :\n' +
-                printAssetTerapis +
+
                 '================================ \n' +
                 '\t \t Total :' + totalPembayaran + '\n' +
                 '\t \t Tunai :' + tunai + '\n' +
@@ -808,17 +833,15 @@ document.addEventListener('init', function (event) {
                 'Nama Tamu :' + namaCheckout + '\n' +
 
                 '================================ \n' +
-                ' Nama Jasa \t \t Harga \n' +
+                ' Nama Jasa \t \t   Harga \n' +
                 '-------------------------------- \n' +
                 printAsset +
                 '-------------------------------- \n' +
-                'Terapis :\n' +
-                printAssetTerapis +
                 '================================ \n' +
-                '\t \t Total :' + totalPembayaran + '\n' +
-                '\t \t Tunai :' + tunai + '\n' +
-                '\t \t Kembali :' + kembalian + '\n' +
-                '\t \t Voucher :' + voucherValue + '\n \n';
+                '       Total :' + totalPembayaran + '\n' +
+                '       Tunai :' + tunai + '\n' +
+                '       Kembali :' + kembalian + '\n' +
+                '       Voucher :' + voucherValue + '\n \n';
 
 
 
@@ -844,15 +867,15 @@ document.addEventListener('init', function (event) {
                 }
             }
 
-
+            let nilaiYangDibayar=setTotalPembayaranDibayarView(totalPembayaranDibayar);
             $.ajax({
                 method: 'post',
-                url: _URL + '?query=mutation{ CreateHeader(ref_id:"' + refID + '", tanggal:"' + getTanggal() + ' ' + getWaktu() + '",jenis:"' + tipePembayaran + '",jumlah:"' + totalPembayaran + '",referensi:"-", diskon:"'+voucherValue+'"){id,nomor,tanggal }}',
+                url: _URL + '?query=mutation{ CreateHeader(ref_id:"' + refID + '", tanggal:"' + getTanggal() + ' ' + getWaktu() + '",jenis:"' + tipePembayaran + '",jumlah:"' + nilaiYangDibayar + '",referensi:"-", diskon:"' + voucherValue + '"){id,nomor,tanggal }}',
                 success: function (data) {
                     let dataHeaderPembayaran = data.data.CreateHeader;
                     // let dataID = dataHeaderPembayaran.id;
                     console.log(data);
-                    
+
                     try {
 
                         // BTPrinter.connect(function (data) {
@@ -868,7 +891,7 @@ document.addEventListener('init', function (event) {
                             console.log(data)
                         }, function (err) {
                             console.log("Error");
-                            
+
                         }, printSend);
                     } catch (err) {
                         console.log(err);
@@ -913,91 +936,104 @@ document.addEventListener('init', function (event) {
             let tunai = $('#input-tunai').val();
             console.log('tunai :' + tunai + voucherValue);
             let loadingCircle = $("<div '>Menyambungkan ke printer...</div><div style='text-align:center;'><ons-progress-circular id='loading' style='text-align:center;' indeterminate></ons-progress-circular></div>");
-            $('#print-gagal-notification').html(loadingCircle);
-            // let modal = document.querySelector('#modal-invoice-printer');
-            // modal.show();
-            //untuk menyambungkan printer secara asyncronous
-            setTimeout(function() {
-                BTPrinter.connect(function (data) {
-                    console.log(data);
-                    console.log("Success");
-                    $('#print-gagal-notification').html('Printer Tersambung');
-                    
-                }, function (err) {
-                    console.log(err);
-                    let notif = 'Printer Tidak Tersambung';
-                    $('#print-gagal-notification').html(notif);
-                    
-                }, "BlueTooth Printer");
-            }, 3500);
-           
-            if (tunai + voucherValue >= totalPembayaran) {
-                       
-                var dialog = document.getElementById('invoice-alert-dialog');
-                if (dialog) {
-                    dialog.show();
-                }
-            } else {
-                ons.notification.alert("Pembayaran kurang");
-            }
 
-            // if (tunai + voucherValue >= totalPembayaran) {
-            //     let dialog = document.getElementById('invoice-alert-dialog');
-
-            //     if (dialog) {
-            //         dialog.show();
-            //     }
-            // } else {
-            //     ons.notification.alert("Pembayaran kurang");
-            // }
-        };
-
-
-        //menambah data pesanan
-
-        page.querySelector('#tambah-invoice').onclick = function () {
-            try {
-                let jasa = document.getElementById("list-jasa-invoice");
-                let textJasa = jasa.options[jasa.selectedIndex].text;
-                let harga = parseInt(jasaData[jasa.selectedIndex].harga);
-                let id_produk = parseInt(jasaData[jasa.selectedIndex].id);
-                let terapis = document.getElementById("list-terapis-invoice");
-                let textTerapis = terapis.options[terapis.selectedIndex].text;
-                let id_karyawan = parseInt(terapisData[terapis.selectedIndex].id);
-
-                if (arrayPrintTerapis.length != 0) {
-                    let contoh = ' ' + textTerapis + '\n';
-                    for (i = 0; i < arrayPrintTerapis.length; i++) {
-                        if (arrayPrintTerapis[i].string != contoh) {
-                            arrayPrintTerapis.push({ "id": angkaIterasi2, "string": ' ' + textTerapis + '\n' });
-                        }
+            let modal = document.querySelector('#modal-invoice-printer');
+            modal.show();
+            //untuk menyambungkan printer 
+            BTPrinter.connect(function (data) {
+                console.log(data);
+                console.log("Success");
+                $('#print-gagal-notification').html('Printer Tersambung');
+                if (tunai + voucherValue >= totalPembayaran) {
+                    modal.hide();
+                    var dialog = document.getElementById('invoice-alert-dialog');
+                    if (dialog) {
+                        dialog.show();
                     }
                 } else {
-                    arrayPrintTerapis.push({ "id": angkaIterasi2, "string": ' ' + textTerapis + '\n' });
+                    modal.hide();
+                    ons.notification.alert("Pembayaran kurang");
                 }
-                arrayPrintPesanan.push({ "id": angkaIterasi2, "string": ' ' + textJasa + '\t \t' + harga + '\n' });
-                arrayPembayaran.push({ "id": angkaIterasi2, "produk_id": id_produk, "karyawan_id": id_karyawan });
 
-                var listTambah = "<ons-list-item id='dataInvoice-" + angkaIterasi2 + "' style='background-color: #ccffcf'><ons-row><ons-col width='29%'>" + textJasa + "</ons-col>" +
-                    "<ons-col width='18%'>" + harga + "</ons-col>" +
-                    "<ons-col width='18%'>" + textTerapis + "</ons-col>" +
-                    // "<ons-col width='10%'>1</ons-col>" +
-                    "<ons-col width='30%'></ons-col> " +
-                    "<ons-col width='5%'>" +
-                    "<ons-icon icon='ion-navicon, material:md-close-circle-o' onClick='deleteItemInvoice(" + angkaIterasi2 + "," + harga + ")'></ons-icon></ons-col></ons-row><ons-list-item";
-                document.getElementById("list-item-invoice").innerHTML += listTambah;
-                totalPembayaran = totalPembayaran + harga;
-                document.getElementById("total-harga-invoice").innerHTML = numberWithCommas(totalPembayaran);
-                angkaIterasi2++;
-                console.log(arrayPembayaran);
-
-            } catch (err) {
+            }, function (err) {
                 console.log(err);
+                let notif = 'Printer Tidak Tersambung';
+                $('#print-gagal-notification').html(notif);
+                if (tunai + voucherValue >= totalPembayaran) {
+                    modal.hide();
+                    var dialog = document.getElementById('invoice-alert-dialog');
+                    if (dialog) {
+                        dialog.show();
+                    }
+                } else {
+                    modal.hide();
+                    ons.notification.alert("Pembayaran kurang");
+                }
+
+            }, "BlueTooth Printer");
+        }
+
+
+
+        // if (tunai + voucherValue >= totalPembayaran) {
+        //     let dialog = document.getElementById('invoice-alert-dialog');
+
+        //     if (dialog) {
+        //         dialog.show();
+        //     }
+        // } else {
+        //     ons.notification.alert("Pembayaran kurang");
+        // }
+    };
+
+
+    //menambah data pesanan
+
+    page.querySelector('#tambah-invoice').onclick = function () {
+        try {
+            let jasa = document.getElementById("list-jasa-invoice");
+            let textJasa = jasa.options[jasa.selectedIndex].text;
+            let harga = parseInt(jasaData[jasa.selectedIndex].harga);
+            let id_produk = parseInt(jasaData[jasa.selectedIndex].id);
+            let terapis = document.getElementById("list-terapis-invoice");
+            let textTerapis = terapis.options[terapis.selectedIndex].text;
+            let id_karyawan = parseInt(terapisData[terapis.selectedIndex].id);
+
+            if (arrayPrintTerapis.length != 0) {
+                let contoh = ' ' + textTerapis + '\n';
+                for (i = 0; i < arrayPrintTerapis.length; i++) {
+                    if (arrayPrintTerapis[i].string != contoh) {
+                        arrayPrintTerapis.push({ "id": angkaIterasi2, "string": ' ' + textTerapis + '\n' });
+                    }
+                }
+            } else {
+                arrayPrintTerapis.push({ "id": angkaIterasi2, "string": ' ' + textTerapis + '\n' });
             }
-        };
-        //penanggalan
-    }
-});
+            arrayPrintPesanan.push({ "id": angkaIterasi2, "string": ' ' + textJasa + '\t \t' + harga + '\n' });
+            arrayPembayaran.push({ "id": angkaIterasi2, "produk_id": id_produk, "karyawan_id": id_karyawan });
+
+            var listTambah = "<ons-list-item id='dataInvoice-" + angkaIterasi2 + "' style='background-color: #ccffcf'><ons-row><ons-col width='29%'>" + textJasa + "</ons-col>" +
+                "<ons-col width='18%'>" + harga + "</ons-col>" +
+                "<ons-col width='18%'>" + textTerapis + "</ons-col>" +
+                // "<ons-col width='10%'>1</ons-col>" +
+                "<ons-col width='30%'></ons-col> " +
+                "<ons-col width='5%'>" +
+                "<ons-icon icon='ion-navicon, material:md-close-circle-o' onClick='deleteItemInvoice(" + angkaIterasi2 + "," + harga + ")'></ons-icon></ons-col></ons-row><ons-list-item";
+            document.getElementById("list-item-invoice").innerHTML += listTambah;
+            totalPembayaran = totalPembayaran + harga;
+            totalPembayaranDibayar = totalPembayaranDibayar + harga;
+            document.getElementById("total-harga-invoice").innerHTML = numberWithCommas(totalPembayaran);
+            document.getElementById("total-harga-dibayar-invoice").innerHTML = numberWithCommas(":"+totalPembayaranDibayar);
+            angkaIterasi2++;
+            console.log(arrayPembayaran);
+
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    //penanggalan
+}
+);
 
 
 

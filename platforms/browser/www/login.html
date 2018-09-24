@@ -1,20 +1,20 @@
 <ons-page id="login">
-    <ons-card style="margin-top: 10%;">
+    
         <div style="text-align: center; margin-top: 5%; margin-bottom: 5%; ">
-            <img src="img/logo_akira_putih.png" alt="" style="max-width: 120px; max-height: 120px;">
+            <img src="img/logo_akira_no_background.png" alt="" style="max-width: 120px; max-height: 120px;margin-top: 10%;">
         </div>
         <div style="text-align: center;">
             <form action="index.html" method="POST">
                 <p>
-                    <ons-input id="namaUser" type="text" style="width: 50%;" modifier="transparent" placeholder="Username" float></ons-input>
+                    <ons-input id="namaUser" type="text" class="inputLogin" modifier="transparent" placeholder="Username" float></ons-input>
                 </p>
                 <p>
-                    <ons-input id="passUser" type="password" style="width: 50%;" modifier="transparent" placeholder="Kata Sandi" float></ons-input>
+                    <ons-input id="passUser" type="password" class="inputLogin" modifier="transparent" placeholder="Kata Sandi" float></ons-input>
                 </p>
-                <ons-button id="user-masuk" style="width: 50%;">Masuk</ons-button>
+                <ons-button id="user-masuk" class="buttonLogin">Masuk</ons-button>
             </form>
         </div>
-    </ons-card>
+    
 
     <ons-modal direction="up" id="modal-login">
         <div style="text-align: center">

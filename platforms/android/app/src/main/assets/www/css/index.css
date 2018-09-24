@@ -19,3 +19,15 @@
     margin-top: 3%;
     width: 80%;
 }
+
+.inputLogin{
+    width:80%;
+    margin: auto;
+    margin-top: 15%;
+}
+
+.buttonLogin{
+    width:65%;
+    margin: auto;
+    margin-top: 15%;
+}

@@ -28,15 +28,32 @@
                             let tanggal = value.tanggal.split(" ");
                             let kode = value.header_reservasi_id.kode;
                             if (tanggal[0] === getTanggal()) {
-                            let list = $("<ons-list-item tappable id='dataTamuCheckout-" + key + "' >" + nama + "</ons-list-item>");
-                            $(".checkoutList").append(list);
-                            $("#dataTamuCheckout-" + key).on('click', function () {
-                             
-                                setDataCheckout(nama, id, kode);
-                                document.querySelector('#myNavigator').pushPage('invoice.html');
-                                console.log('nama checkout:' + namaCheckout);
-                            });
-                        }
+                                $.ajax({
+                                    method: 'get',
+                                    url: _URL + '?query= {users(username:"' + nama + '"){nama,jenis_kelamin}}',
+                                    success: function (datas) {
+                                        $('#loading').remove();
+                                        let namaTamu = datas.data.users[0].nama;
+                                        let list = $("<ons-list-item tappable id='dataTamuCheckout-" + key + "' >" + namaTamu + "</ons-list-item>");
+                                        $(".checkoutList").append(list);
+                                        $("#dataTamuCheckout-" + key).on('click', function () {
+
+                                            setDataCheckout(nama, id, kode);
+                                            document.querySelector('#myNavigator').pushPage('invoice.html');
+                                            console.log('nama checkout:' + namaCheckout);
+                                        });
+
+                                    },
+                                    error: function (data) {
+                                        console.log(data);
+                                        return id;
+                                    }
+
+
+                                });
+
+
+                            }
 
                         } catch (err) {
                             console.log(err);
@@ -49,7 +66,7 @@
                     //     let list = $("<ons-list-item  >Tidak ada tamu yang Check in</ons-list-item>");
                     //     $(".checkoutList").append(list);
                     // }
-                    $('#loading').remove();
+                    
                 },
                 error: function (data) {
                     console.log(data);
