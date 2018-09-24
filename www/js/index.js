@@ -229,12 +229,13 @@ function deleteAllItemInvoice() {
     jsonPrint2 = null;
     angkaIterasi2 = 1;
     voucherValue = 0;
-    arrayPrintPesanan = [];
+    arrayPrintPesanan=[];
     refID = null;
     checkoutID = null;
     namaCheckout = null;
     kodePembayaran = null;
     totalPembayaranDibayar=0;
+    printAsset="";
 
 }
 
